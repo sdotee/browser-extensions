@@ -122,6 +122,26 @@ async function init(): Promise<void> {
   await initTheme();
   await checkAuthStatus();
   setupEventListeners();
+  await checkPendingQR();
+}
+
+// Check for pending QR code from context menu
+async function checkPendingQR(): Promise<void> {
+  try {
+    const result = await chrome.storage.local.get(['see_pending_qr', 'see_pending_qr_timestamp']);
+    if (result.see_pending_qr && result.see_pending_qr_timestamp) {
+      // Only show if less than 30 seconds old
+      const age = Date.now() - result.see_pending_qr_timestamp;
+      if (age < 30000) {
+        // Clear the pending QR
+        await chrome.storage.local.remove(['see_pending_qr', 'see_pending_qr_timestamp']);
+        // Open QR modal
+        openQrModal(result.see_pending_qr);
+      }
+    }
+  } catch (error) {
+    console.error('Failed to check pending QR:', error);
+  }
 }
 
 // Initialize theme

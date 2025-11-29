@@ -6,11 +6,19 @@
   "permissions": [
     "activeTab",
     "storage",
-    "clipboardWrite"
+    "clipboardWrite",
+    "contextMenus",
+    "notifications",
+    "scripting"
   ],
   "host_permissions": [
-    "https://s.ee/*"
+    "https://s.ee/*",
+    "<all_urls>"
   ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

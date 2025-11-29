@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { copyFileSync, mkdirSync, readdirSync } from 'fs';
+import { build } from 'vite';
 
 // Plugin to copy static files to dist
 function copyStaticFiles() {
@@ -18,6 +19,36 @@ function copyStaticFiles() {
       });
 
       console.log('Copied manifest.json and icons to dist/');
+    },
+  };
+}
+
+// Plugin to build background script separately
+function buildBackgroundScript() {
+  return {
+    name: 'build-background-script',
+    async closeBundle() {
+      await build({
+        configFile: false,
+        build: {
+          outDir: 'dist',
+          emptyOutDir: false,
+          lib: {
+            entry: resolve(__dirname, 'src/background.ts'),
+            name: 'background',
+            formats: ['es'],
+            fileName: () => 'background.js',
+          },
+          rollupOptions: {
+            output: {
+              inlineDynamicImports: true,
+            },
+          },
+          target: 'esnext',
+          minify: false,
+        },
+      });
+      console.log('Built background.js');
     },
   };
 }
@@ -43,5 +74,5 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
-  plugins: [copyStaticFiles()],
+  plugins: [copyStaticFiles(), buildBackgroundScript()],
 });
