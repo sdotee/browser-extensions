@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "S.EE URL Shortener",
+  "name": "S.EE - URL Shortener & QR Code Generator",
   "version": "1.0.0",
-  "description": "Shorten any URL with S.EE - Fast, simple, and elegant URL shortening",
+  "description": "Shorten URLs and generate QR codes instantly. One-click shortening, custom slugs, QR code export (PNG/SVG/PDF), history management, and right-click menu support.",
   "permissions": [
     "activeTab",
     "storage",
