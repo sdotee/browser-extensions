@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "S.EE URL Shortener",
+  "version": "1.0.0",
+  "description": "Shorten any URL with S.EE - Fast, simple, and elegant URL shortening",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://s.ee/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
