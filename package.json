@@ -9,12 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "qrcode": "^1.5.4",
-    "jspdf": "^3.0.4"
+    "jspdf": "^3.0.4",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.315",
     "@types/qrcode": "^1.5.6",
+    "terser": "^5.44.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.4"
   }
