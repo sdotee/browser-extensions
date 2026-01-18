@@ -5,7 +5,19 @@
       "Bash(npm install)",
       "Bash(npm run build:*)",
       "Bash(grep:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(git checkout:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "mcp__deepwiki__read_wiki_structure",
+      "mcp__deepwiki__ask_question",
+      "Bash(git fetch:*)",
+      "Bash(bun install:*)",
+      "Bash(bun run build:*)",
+      "Bash(bun run build:firefox:*)",
+      "WebFetch(domain:i.see.you)",
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,5 +1,5 @@
 /* ===================================
-   S.EE Chrome Extension Styles
+   S.EE Browser Extension Styles
    Design System: Modern SaaS (Vercel/Linear)
    =================================== */
 
@@ -252,12 +252,26 @@ body {
   margin-bottom: var(--space-4);
 }
 
+.form-row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.flex-1 {
+  flex: 1;
+}
+
 .label {
   display: block;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
   margin-bottom: var(--space-2);
+}
+
+.label-optional {
+  font-weight: 400;
+  color: var(--text-muted);
 }
 
 .input-wrapper {
@@ -373,6 +387,58 @@ body {
   margin-top: var(--space-2);
 }
 
+/* Main Tabs */
+.main-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  background: var(--surface-elevated);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+}
+
+.main-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.main-tab:hover {
+  color: var(--text-primary);
+}
+
+.main-tab.active {
+  color: var(--text-primary);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.main-tab .icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Tab Content */
+.tab-content {
+  animation: fadeIn var(--transition-fast);
+}
+
+.tab-content.hidden {
+  display: none !important;
+}
+
 /* URL Source Toggle */
 .url-source-toggle {
   display: flex;
@@ -414,6 +480,230 @@ body {
 .url-source-btn .icon {
   width: 14px;
   height: 14px;
+}
+
+/* File Upload Area */
+.file-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  margin-bottom: var(--space-4);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.file-upload-area:hover,
+.file-upload-area.drag-over {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.file-upload-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.file-upload-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+.file-upload-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.file-select-btn {
+  cursor: pointer;
+}
+
+.file-select-btn input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+/* File Preview */
+.file-preview {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.file-info > .icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* File List (for batch upload) */
+.file-list-container {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.file-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.file-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.file-list {
+  max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.file-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.file-list-item .file-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.file-list-item .file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-list-item .file-name {
+  font-size: 12px;
+}
+
+.file-list-item .file-size {
+  font-size: 10px;
+}
+
+.file-list-item .remove-file-btn {
+  padding: 2px;
+}
+
+.file-list-item .remove-file-btn .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.file-list-item.uploading {
+  opacity: 0.7;
+}
+
+.file-list-item.success {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.file-list-item.error {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.file-list-item .status-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.file-list-item .status-icon.success {
+  color: var(--success);
+}
+
+.file-list-item .status-icon.error {
+  color: var(--error);
+}
+
+/* Upload Progress */
+.upload-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: width var(--transition-fast);
+}
+
+.progress-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 35px;
+  text-align: right;
 }
 
 /* Buttons */
@@ -664,6 +954,138 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+}
+
+/* Batch Upload Result */
+.batch-result-card {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.batch-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.batch-file-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.batch-file-item .file-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.batch-file-item .file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.batch-file-item .file-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.batch-file-item .file-url {
+  display: block;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.batch-file-item .copy-file-btn {
+  flex-shrink: 0;
+}
+
+.batch-file-item.error {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.batch-file-item.error .file-url {
+  color: var(--error);
+}
+
+.batch-copy-section {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.batch-copy-header {
+  margin-bottom: var(--space-3);
+}
+
+.batch-copy-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.batch-copy-options {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+  margin-bottom: var(--space-3);
+}
+
+.batch-copy-options .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.batch-filename-option {
+  white-space: nowrap;
+  padding-bottom: var(--space-2);
+}
+
+.batch-copy-preview {
+  margin-bottom: var(--space-3);
+}
+
+.batch-textarea {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  resize: none;
+}
+
+/* Batch Copy Button States */
+#batch-copy-btn .icon-check,
+#batch-copy-btn .btn-text-copied {
+  display: none;
+}
+
+#batch-copy-btn.copied {
+  background: var(--success);
+}
+
+#batch-copy-btn.copied .icon-copy,
+#batch-copy-btn.copied .btn-text {
+  display: none;
+}
+
+#batch-copy-btn.copied .icon-check,
+#batch-copy-btn.copied .btn-text-copied {
+  display: inline-block;
 }
 
 /* History Section */

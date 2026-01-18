@@ -1,109 +1,146 @@
-# S.EE - URL Shortener & QR Code Generator
+# S.EE Browser Extension
 
-A powerful Chrome extension for shortening URLs and generating QR codes using the [S.EE](https://s.ee) service.
+A cross-browser extension for [S.EE](https://s.ee) - URL shortening, text sharing, and file hosting service.
 
 ## Features
 
-- **One-Click URL Shortening** - Shorten the current page URL with a single click
-- **Custom URL Input** - Enter any URL to shorten, not just the current page
-- **Custom Slugs** - Create memorable short URLs with custom slugs
-- **Multiple Domains** - Choose from your available S.EE domains
-- **QR Code Generation** - Generate QR codes for any shortened URL
-- **QR Code Export** - Download QR codes in PNG, SVG, or PDF format (512x512)
-- **Right-Click Menu** - Shorten URLs or generate QR codes directly from context menu
-- **History Management** - View, copy, and manage your shortened URLs with pagination
-- **Auto-Copy** - Automatically copy shortened URLs to clipboard
-- **Dark/Light Mode** - Seamless theme switching based on your preference
-- **Desktop Notifications** - Get notified when URLs are shortened via context menu
+- **URL Shortening**: Shorten any URL with custom slugs and multiple domain options
+- **Text Sharing**: Share code snippets and text with syntax highlighting support
+- **File Upload**: Batch upload files with multiple export formats (Plain/Markdown/HTML/BBCode)
+- **QR Code Generation**: Generate and export QR codes in PNG, SVG, or PDF format
+- **Context Menus**: Right-click to shorten pages/links, show QR codes, share text, upload images
+- **History Management**: Track and manage URLs, texts, and files with batch operations
+- **Draft Persistence**: Input fields are saved automatically across sessions
+- **Dark/Light Theme**: Automatic theme detection with manual toggle
+- **Cross-Browser**: Works on Chrome (MV3) and Firefox (MV2)
 
 ## Installation
 
-### From Chrome Web Store
-*(Coming soon)*
+### From Source
 
-### Manual Installation (Developer Mode)
-1. Download or clone this repository
-2. Run `npm install` to install dependencies
-3. Run `npm run build` to build the extension
-4. Open Chrome and navigate to `chrome://extensions/`
-5. Enable "Developer mode" in the top right corner
-6. Click "Load unpacked" and select the `dist` folder
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/aspect-apps/see-chrome-extension.git
+   cd see-chrome-extension
+   ```
+
+2. Install dependencies:
+   ```bash
+   bun install
+   ```
+
+3. Build the extension:
+   ```bash
+   # For Chrome
+   bun run build
+
+   # For Firefox
+   bun run build:firefox
+   ```
+
+4. Load the extension:
+   - **Chrome**: Go to `chrome://extensions/`, enable Developer mode, click "Load unpacked", select `.output/chrome-mv3/`
+   - **Firefox**: Go to `about:debugging`, click "This Firefox", click "Load Temporary Add-on", select `.output/firefox-mv2/manifest.json`
 
 ## Usage
 
 ### Getting Started
+
 1. Click the S.EE extension icon in your browser toolbar
 2. Enter your API token (get one at [s.ee/user/developers](https://s.ee/user/developers/))
 3. Click "Save Token & Continue"
 
-### Shortening URLs
+### URL Shortening
+
 - **Current Page**: Click "Shorten URL" to shorten the active tab's URL
-- **Custom URL**: Switch to "Custom URL" tab and enter any URL to shorten
-- **Custom Slug**: Enable "Use custom slug" to create a memorable short URL
+- **Custom URL**: Enter any URL to shorten
+- **Custom Slug**: Enable custom slug to create memorable short URLs
 
-### Right-Click Menu
-Right-click on any page or link to access:
-- **Shorten this page/link** - Creates a short URL and copies to clipboard
-- **Generate QR Code for this page/link** - Creates a short URL and prepares QR code
+### Text Sharing
 
-### QR Codes
-- QR codes are automatically generated for each shortened URL
-- Export in PNG, SVG, or PDF format
-- Copy QR code image directly to clipboard
-- Access QR codes for historical links from the history section
+- Enter text or code to share
+- Optional title (defaults to "Untitled")
+- Select text type for syntax highlighting
+
+### File Upload
+
+- Drag & drop or select files (supports batch upload)
+- Individual copy buttons for each uploaded file
+- Batch copy with format options:
+  - Plain URLs
+  - Markdown links
+  - HTML links
+  - BBCode links
+- Optional filename inclusion in export
+
+### Context Menu Actions
+
+Right-click on any page to access:
+- **Shorten This Page** - Shorten current page URL
+- **Shorten This Link** - Shorten a link (when right-clicking on links)
+- **Show QR Code** - Generate QR code for page/link
+- **Share Selected Text** - Share highlighted text
+- **Upload Image to S.EE** - Upload image with automatic WebP conversion
 
 ### History
-- View all your shortened URLs with pagination (10 per page)
-- Copy, open, or delete individual links
-- Batch select and delete multiple links
-- Clear all history with one click
+
+- Tab-aware history for URLs, Texts, and Files
+- Copy, open, or delete individual items
+- Batch select and delete multiple items
+- Clear all history per category
 
 ## Development
 
-### Prerequisites
-- Node.js 18+
-- npm
-
-### Setup
 ```bash
 # Install dependencies
-npm install
+bun install
+
+# Development mode with hot reload
+bun run dev          # Chrome
+bun run dev:firefox  # Firefox
 
 # Build for production
-npm run build
-
-# Development mode with watch
-npm run dev
+bun run build          # Chrome
+bun run build:firefox  # Firefox
 ```
 
 ### Project Structure
+
 ```
 see-chrome-extension/
-├── src/
-│   ├── main.ts        # Main popup logic
-│   ├── background.ts  # Service worker for context menu
-│   ├── sdk.ts         # S.EE API client
-│   ├── storage.ts     # Chrome storage utilities
-│   └── styles.css     # Styles with dark/light theme
-├── popup.html         # Extension popup UI
-├── manifest.json      # Chrome extension manifest
-├── icons/             # Extension icons
-└── dist/              # Built extension (for installation)
+├── entrypoints/
+│   ├── popup/
+│   │   ├── index.html    # Popup UI structure
+│   │   ├── main.ts       # Core popup logic
+│   │   └── style.css     # Styles with theme support
+│   └── background.ts     # Service worker for context menus
+├── utils/
+│   ├── sdk.ts            # S.EE API client
+│   └── storage.ts        # Browser storage utilities
+├── public/
+│   └── icons/            # Extension icons
+├── wxt.config.ts         # WXT configuration
+└── .output/              # Built extensions
+    ├── chrome-mv3/       # Chrome build
+    └── firefox-mv2/      # Firefox build
 ```
 
 ### Tech Stack
-- TypeScript
-- Vite
-- Chrome Extension Manifest V3
-- QRCode.js
-- jsPDF
+
+- [WXT](https://wxt.dev/) - Next-gen Web Extension Framework
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [QRCode.js](https://github.com/soldair/node-qrcode)
+- [jsPDF](https://github.com/parallax/jsPDF)
+- [html2canvas](https://html2canvas.hertzen.com/)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
 
 ## Privacy
 
 This extension:
 - Only communicates with the S.EE API (https://s.ee)
-- Stores your API token and preferences in Chrome's sync storage
-- Stores URL history locally on your device
+- Stores your API token and preferences in browser sync storage
+- Stores history locally on your device
 - Does not collect or transmit any personal data
 
 ## License

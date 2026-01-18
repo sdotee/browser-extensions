@@ -5,47 +5,55 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build Commands
 
 ```bash
-npm install      # Install dependencies
-npm run build    # Build extension to dist/
-npm run dev      # Watch mode for development
+bun install              # Install dependencies
+bun run build            # Build Chrome extension
+bun run build:firefox    # Build Firefox extension
+bun run dev              # Watch mode for Chrome development
+bun run dev:firefox      # Watch mode for Firefox development
 ```
 
-After building, load `dist/` folder as unpacked extension in Chrome (`chrome://extensions/`).
+Build outputs:
+- Chrome MV3: `.output/chrome-mv3/`
+- Firefox MV2: `.output/firefox-mv2/`
 
-To create release package:
-```bash
-cd dist && zip -r ../see-extension-v1.0.0.zip .
-```
+Load as unpacked extension:
+- Chrome: `chrome://extensions/` → Load `.output/chrome-mv3/`
+- Firefox: `about:debugging` → Load Temporary Add-on → select `manifest.json`
 
 ## Architecture
 
-Chrome Extension (Manifest V3) for S.EE URL shortening service with QR code generation.
+Cross-browser extension built with WXT framework for S.EE URL shortening, text sharing, and file hosting service.
 
 ### Entry Points
 
-- **popup.html + src/main.ts**: Extension popup UI - handles URL shortening, QR generation, history management, settings
-- **src/background.ts**: Service worker - handles context menu creation and right-click actions
+- **entrypoints/popup/**: Extension popup UI
+  - `index.html`: Popup structure with tabs (URL/Text/Files)
+  - `main.ts`: Core logic for shortening, sharing, uploading, history
+  - `style.css`: Modern design system with dark/light themes
+- **entrypoints/background.ts**: Service worker for context menus and background tasks
 
 ### Core Modules
 
-- **src/sdk.ts**: Browser-compatible API client for S.EE (uses fetch, not Node.js axios)
-- **src/storage.ts**: Chrome storage abstraction (sync for settings, local for history)
+- **utils/sdk.ts**: Browser-compatible API client for S.EE API
+- **utils/storage.ts**: WXT storage abstraction (sync for settings, local for history)
 
-### Build System
+### Key Features
 
-Vite builds two separate bundles:
-1. Main popup bundle from `popup.html`
-2. Background service worker via custom plugin in `vite.config.ts`
-
-The build copies `manifest.json` and `icons/` to `dist/`.
+- **URL Shortening**: Shorten URLs with custom slugs and domain selection
+- **Text Sharing**: Share text/code snippets with syntax highlighting options
+- **File Upload**: Batch upload with progress tracking and format options (Plain/Markdown/HTML/BBCode)
+- **Context Menus**: Right-click to shorten page/link, show QR, share selection, upload image
+- **History**: Tab-aware history with batch delete for URLs/Texts/Files
+- **Draft Persistence**: localStorage saves input drafts across popup sessions
 
 ### Key Patterns
 
 - Theme system uses CSS custom properties with `[data-theme="dark"]` selector
-- QR codes exported at 512x512 using qrcode library
-- Clipboard in service worker uses `chrome.scripting.executeScript` to inject into active tab
-- Context menu actions store pending data in `chrome.storage.local` for popup to consume
+- QR codes generated at 100px display, exported at 512px
+- Image upload converts to WebP via Canvas API before upload
+- Clipboard in service worker uses `browser.scripting.executeScript` injection
+- WXT handles cross-browser compatibility (Chrome MV3 / Firefox MV2)
 
 ### Permissions
 
-Extension requires: `activeTab`, `storage`, `clipboardWrite`, `contextMenus`, `notifications`, `scripting`, and `<all_urls>` host permission for script injection.
+Extension requires: `activeTab`, `storage`, `clipboardWrite`, `contextMenus`, `notifications`, `scripting`, and `<all_urls>` host permission.
