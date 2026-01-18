@@ -2,6 +2,7 @@ import { defineConfig } from 'wxt';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+  manifestVersion: 3,
   manifest: ({ browser }) => ({
     name: 'S.EE - URL Shortener, Text & File Sharing',
     version: '2.0.0',

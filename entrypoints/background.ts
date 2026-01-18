@@ -12,6 +12,7 @@ const STORAGE_KEYS = {
   DEFAULT_URL_DOMAIN: 'sync:see_default_url_domain',
   AUTO_COPY: 'sync:see_auto_copy',
   URL_HISTORY: 'local:see_url_history',
+  TEXT_HISTORY: 'local:see_text_history',
   FILE_HISTORY: 'local:see_file_history',
 };
 
@@ -25,16 +26,15 @@ const MENU_IDS = {
 };
 
 export default defineBackground({
-  // Use persistent for Firefox MV3 compatibility
-  persistent: {
-    chrome: false,
-    firefox: true,
-  },
+  type: 'module',
   main() {
     // Set up context menus when extension is installed
     browser.runtime.onInstalled.addListener(() => {
       createContextMenus();
     });
+
+    // Also create context menus on startup (for Firefox MV3 service worker restarts)
+    createContextMenus();
 
     // Handle context menu clicks
     browser.contextMenus.onClicked.addListener(handleContextMenuClick);
@@ -166,8 +166,18 @@ async function handleShortenUrl(url: string): Promise<void> {
 
     // Copy to clipboard
     const autoCopy = await storage.getItem<boolean>(STORAGE_KEYS.AUTO_COPY);
+    let copied = false;
     if (autoCopy !== false) {
-      await copyToClipboard(shortUrl);
+      try {
+        await copyToClipboard(shortUrl);
+        copied = true;
+      } catch (e) {
+        console.error('Clipboard copy failed:', e);
+      }
+    }
+
+    // Show notification
+    if (copied) {
       showNotification('URL Shortened', `${shortUrl}\n\nCopied to clipboard!`);
     } else {
       showNotification('URL Shortened', shortUrl);
@@ -237,12 +247,30 @@ async function handleShareSelection(text: string, tab?: browser.Tabs.Tab): Promi
 
     // Copy to clipboard
     const autoCopy = await storage.getItem<boolean>(STORAGE_KEYS.AUTO_COPY);
+    let copied = false;
     if (autoCopy !== false) {
-      await copyToClipboard(shortUrl);
+      try {
+        await copyToClipboard(shortUrl);
+        copied = true;
+      } catch (e) {
+        console.error('Clipboard copy failed:', e);
+      }
+    }
+
+    // Show notification
+    if (copied) {
       showNotification('Text Shared', `${shortUrl}\n\nCopied to clipboard!`);
     } else {
       showNotification('Text Shared', shortUrl);
     }
+
+    // Add to history
+    await addToTextHistory({
+      title,
+      content: text.substring(0, 500),
+      shortUrl,
+      slug: response.data.slug,
+    });
   } catch (error) {
     console.error('Failed to share text:', error);
     showNotification('Error', 'Failed to share text. Please try again.');
@@ -289,11 +317,14 @@ async function copyToClipboard(text: string): Promise<void> {
  * Show browser notification
  */
 function showNotification(title: string, message: string): void {
-  browser.notifications.create({
+  const notificationId = `see-notification-${Date.now()}`;
+  browser.notifications.create(notificationId, {
     type: 'basic',
     iconUrl: browser.runtime.getURL('icons/icon128.png'),
     title: `S.EE - ${title}`,
     message,
+  }).catch((error) => {
+    console.error('Failed to show notification:', error);
   });
 }
 
@@ -496,6 +527,28 @@ async function addToUrlHistory(item: Omit<UrlHistoryItem, 'id' | 'createdAt'>): 
     createdAt: Date.now(),
   };
   await storage.setItem(STORAGE_KEYS.URL_HISTORY, [newItem, ...history]);
+}
+
+/**
+ * Add text to history storage
+ */
+interface TextHistoryItem {
+  id: string;
+  createdAt: number;
+  title: string;
+  content: string;
+  shortUrl: string;
+  slug?: string;
+}
+
+async function addToTextHistory(item: Omit<TextHistoryItem, 'id' | 'createdAt'>): Promise<void> {
+  const history = await storage.getItem<TextHistoryItem[]>(STORAGE_KEYS.TEXT_HISTORY) ?? [];
+  const newItem: TextHistoryItem = {
+    ...item,
+    id: crypto.randomUUID(),
+    createdAt: Date.now(),
+  };
+  await storage.setItem(STORAGE_KEYS.TEXT_HISTORY, [newItem, ...history]);
 }
 
 /**

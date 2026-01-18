@@ -25,7 +25,7 @@ cd ../..
 
 # Package Firefox extension (.xpi)
 echo "Packaging Firefox extension..."
-cd .output/firefox-mv2
+cd .output/firefox-mv3
 zip -r ../release/see-extension-firefox-v${VERSION}.xpi .
 cd ../..
 
