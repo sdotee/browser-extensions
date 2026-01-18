@@ -1,11 +1,12 @@
 import { defineConfig } from 'wxt';
+import pkg from './package.json';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifestVersion: 3,
   manifest: ({ browser }) => ({
     name: 'S.EE - URL Shortener, Text & File Sharing',
-    version: '2.0.0',
+    version: pkg.version,
     description: 'Shorten URLs, share text & files, generate QR codes instantly. Custom slugs, QR export (PNG/SVG/PDF), history, and right-click menu.',
     permissions: [
       'activeTab',
