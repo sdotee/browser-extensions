@@ -2,6 +2,7 @@
   "name": "see-browser-extension",
   "description": "S.EE - URL Shortener, Text & File Sharing with QR Code Generator",
   "private": true,
+  "license": "MIT",
   "version": "2.0.0",
   "type": "module",
   "scripts": {
@@ -12,7 +13,8 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "release": "bash scripts/release.sh"
   },
   "dependencies": {
     "qrcode": "^1.5.4",
