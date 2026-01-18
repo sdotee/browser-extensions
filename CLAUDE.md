@@ -10,11 +10,17 @@ bun run build            # Build Chrome extension
 bun run build:firefox    # Build Firefox extension
 bun run dev              # Watch mode for Chrome development
 bun run dev:firefox      # Watch mode for Firefox development
+bun run release          # Build and package for release
 ```
 
 Build outputs:
 - Chrome MV3: `.output/chrome-mv3/`
-- Firefox MV2: `.output/firefox-mv2/`
+- Firefox MV3: `.output/firefox-mv3/`
+
+Release packages (in `.output/release/`):
+- `see-extension-chrome-v{version}.zip`
+- `see-extension-firefox-v{version}.xpi`
+- `see-extension-source-v{version}.zip`
 
 Load as unpacked extension:
 - Chrome: `chrome://extensions/` → Load `.output/chrome-mv3/`
@@ -52,7 +58,8 @@ Cross-browser extension built with WXT framework for S.EE URL shortening, text s
 - QR codes generated at 100px display, exported at 512px
 - Image upload converts to WebP via Canvas API before upload
 - Clipboard in service worker uses `browser.scripting.executeScript` injection
-- WXT handles cross-browser compatibility (Chrome MV3 / Firefox MV2)
+- WXT handles cross-browser compatibility (Chrome MV3 / Firefox MV3)
+- Version is read from `package.json` - update version there only
 
 ### Permissions
 

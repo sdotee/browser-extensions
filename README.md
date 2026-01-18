@@ -12,7 +12,7 @@ A cross-browser extension for [S.EE](https://s.ee) - URL shortening, text sharin
 - **History Management**: Track and manage URLs, texts, and files with batch operations
 - **Draft Persistence**: Input fields are saved automatically across sessions
 - **Dark/Light Theme**: Automatic theme detection with manual toggle
-- **Cross-Browser**: Works on Chrome (MV3) and Firefox (MV2)
+- **Cross-Browser**: Works on Chrome (MV3) and Firefox (MV3)
 
 ## Installation
 
@@ -20,8 +20,8 @@ A cross-browser extension for [S.EE](https://s.ee) - URL shortening, text sharin
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/aspect-apps/see-chrome-extension.git
-   cd see-chrome-extension
+   git clone https://github.com/sdotee/browser-extensions.git
+   cd browser-extensions
    ```
 
 2. Install dependencies:
@@ -40,7 +40,7 @@ A cross-browser extension for [S.EE](https://s.ee) - URL shortening, text sharin
 
 4. Load the extension:
    - **Chrome**: Go to `chrome://extensions/`, enable Developer mode, click "Load unpacked", select `.output/chrome-mv3/`
-   - **Firefox**: Go to `about:debugging`, click "This Firefox", click "Load Temporary Add-on", select `.output/firefox-mv2/manifest.json`
+   - **Firefox**: Go to `about:debugging`, click "This Firefox", click "Load Temporary Add-on", select `.output/firefox-mv3/manifest.json`
 
 ## Usage
 
@@ -120,9 +120,12 @@ see-chrome-extension/
 ├── public/
 │   └── icons/            # Extension icons
 ├── wxt.config.ts         # WXT configuration
+├── scripts/
+│   └── release.sh        # Release packaging script
 └── .output/              # Built extensions
     ├── chrome-mv3/       # Chrome build
-    └── firefox-mv2/      # Firefox build
+    ├── firefox-mv3/      # Firefox build
+    └── release/          # Packaged releases (.zip, .xpi)
 ```
 
 ### Tech Stack
