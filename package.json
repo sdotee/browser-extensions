@@ -3,7 +3,7 @@
   "description": "S.EE - URL Shortener, Text & File Sharing with QR Code Generator",
   "private": true,
   "license": "MIT",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "scripts": {
     "dev": "wxt",
