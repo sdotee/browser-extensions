@@ -1,9 +1,19 @@
 import { defineConfig } from 'wxt';
+import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifestVersion: 3,
+  vite: () => ({
+    plugins: [
+      replace({
+        // Replace jspdf's remote pdfobject CDN URL to pass Chrome Web Store review
+        'https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js': '',
+        preventAssignment: true,
+      }),
+    ],
+  }),
   manifest: ({ browser }) => ({
     name: 'S.EE - URL Shortener, Text & File Sharing',
     version: pkg.version,

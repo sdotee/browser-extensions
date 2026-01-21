@@ -60,6 +60,7 @@ Cross-browser extension built with WXT framework for S.EE URL shortening, text s
 - Clipboard in service worker uses `browser.scripting.executeScript` injection
 - WXT handles cross-browser compatibility (Chrome MV3 / Firefox MV3)
 - Version is read from `package.json` - update version there only
+- **jsPDF CDN URL**: jspdf contains a hardcoded cloudflare CDN URL (`https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js`) which violates Chrome MV3 policy. This is stripped via `@rollup/plugin-replace` in `wxt.config.ts`. When updating jspdf, check if the URL or version number has changed and update the replace config accordingly. After each build, verify no cloudflare URLs remain: `grep -r "cloudflare" .output/chrome-mv3/`
 
 ### Permissions
 
