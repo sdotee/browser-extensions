@@ -168,6 +168,9 @@ let qrModalUrl: string | null = null;
 let useCustomUrl = false;
 let selectedFiles: File[] = [];
 
+// Detect Firefox
+const isFirefox = typeof browser !== 'undefined' && browser.runtime?.getURL?.('')?.startsWith('moz-extension');
+
 // Batch upload results
 interface BatchUploadResult {
   filename: string;
@@ -728,11 +731,29 @@ function setupEventListeners(): void {
   elements.exportSvgBtn.addEventListener('click', exportSvg);
   elements.exportPdfBtn.addEventListener('click', exportPdf);
 
-  // File upload
-  elements.fileInput.addEventListener('change', handleFileSelect);
+  // File upload - Firefox needs special handling
+  if (isFirefox) {
+    // In Firefox, clicking file input closes the popup, so we open a dedicated upload window
+    const fileSelectBtn = elements.fileDropZone.querySelector('.file-select-btn');
+    if (fileSelectBtn) {
+      fileSelectBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openUploadWindow();
+      });
+    }
+    // Also handle clicking on the drop zone itself
+    elements.fileDropZone.addEventListener('click', (e) => {
+      // Only if clicked on the drop zone area (not the button)
+      if ((e.target as HTMLElement).closest('.file-select-btn')) return;
+      openUploadWindow();
+    });
+  } else {
+    elements.fileInput.addEventListener('change', handleFileSelect);
+  }
   elements.clearAllFilesBtn.addEventListener('click', clearAllSelectedFiles);
 
-  // Drag and drop
+  // Drag and drop (works in both browsers)
   elements.fileDropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
     elements.fileDropZone.classList.add('drag-over');
@@ -1054,6 +1075,14 @@ async function handleShareText(): Promise<void> {
   } finally {
     setButtonLoading(elements.shareTextBtn, false);
   }
+}
+
+// Open upload page (for Firefox)
+async function openUploadWindow(): Promise<void> {
+  const uploadUrl = browser.runtime.getURL('upload.html');
+  await browser.tabs.create({ url: uploadUrl });
+  // Close the popup
+  window.close();
 }
 
 // Handle file select
